@@ -1,0 +1,112 @@
+ #TO CONCATENATE 
+select concat(first_name,' ',last_name)as full_name, hire_date, manager_id
+from employees
+
+
+select first_name, salary, manager_id
+from employees
+where salary < '15000'
+
+ #TO SELECT UPPER, LOWER, RIGHT, LEFT
+select upper(first_name) from employees
+select right(first_name, 2) from employees
+select left(last_name, 2 ) from employees
+
+select * from employees
+
+ #TO REPLACE IN ROWS
+select replace (phone_number, '515', '126')
+from employees
+
+ #TO REPLACE EMAIL
+select replace (email, 'sqltutorial.org','congestogac.on.ca')
+from employees
+
+ #TO REMOVE STRING
+select trim('.',phone_number)
+from employees
+
+ #TO SELECT CURRENT DATE IN DIFFERENT FORMAT
+select current_date, to_char(current_date, 'DD/MM/YYYY')
+select current_date, to_char(current_date, 'MM/DD/YYYY')
+select NOW();
+
+ #HOW TO EXTRACT MONTH, DAY AND YEAR FROM HIRE DATE
+select first_name,hire_date,
+extract(year from hire_date) as hire_year,
+extract(month from hire_date) as hire_month,
+extract(day from hire_date) as hire_day
+from employees;
+
+  #TO CALCULATE THE TENURE DAYS OF EMPLOYEES
+select first_name, last_name, Current_date = hire_date as tenure_days
+from employees;
+
+select * from employees
+where current_date = hire_date;
+
+  #IDENTIFY HOW MUCH EMPLOYEES MAKE GIVEN THE YEAR THEY JOINED THE COMPANY. PROVIDE A SUMMARY OF THEIR SALARY
+select extract(year from hire_date) AS hire_year, ROUND(avg(salary),2) AS avg_salary,
+		COUNT(DISTINCT employee_id)AS emp_count
+		from employees
+		group by hire_year;
+
+  #COMBINE FIRSTNAME, LASTNAME AS FULL NAME FOR PPLE WITH PHONE NO STARTS WITH 590
+select concat(first_name,' ', last_name) as full_name
+from employees
+where left(phone_number, 3) ='590';
+
+  #REPLACE EMAIL WITH CONESTOGAC.ON.CA
+select replace(email,'@sqltutorial.org', '@conestogac.on.ca')
+from employees;
+
+  #CONVERT DEPARTMENT ID TO STRING
+select department_id, cast (department_id as varchar(10))
+from employees;
+
+  #TIMESTAMP
+select NOW();
+
+SELECT current_date, to_char(current_date, 'DD/MM/YYYY');
+
+  #EXTRACT YEAR, MONTH, DAY INFORMATION FROM HIRE DATE
+ select hire_date,
+ extract(year from hire_date) as hire_year,
+ extract(month from hire_date) as hire_month,
+ extract(day from hire_date) as hire_day
+ from employees;
+ 
+ #Display the employees who have completed 25 years with the company
+ SELECT * FROM employees
+ where (current_date - hire_date)/365 >=25;
+ 
+   #We want to identify how many employees and how much employees make given the year they joined the company. Provide a summary of their salary
+select extract(year from hire_date) as hire_year, ROUND(avg(salary),2) as salary_average,
+count(distinct employee_id) as emp_count
+from employees
+GROUP BY hire_year;
+
+  #Can you provide me with the summary of employees who work in the "US" region and were hired before 1995 ordered by the most recent hire first?
+select * from employees
+WHERE DEPARTMENT_ID IN (
+SELECT DEPARTMENT_ID FROM DEPARTMENTS
+WHERE LOCATION_ID IN (
+SELECT LOCATION_ID FROM LOCATIONS
+WHERE COUNTRY_ID IN (SELECT COUNTRY_ID FROM COUNTRIES WHERE REGION_ID = 2)
+  )
+) AND EXTRACT(YEAR FROM HIRE_DATE) = '1995'
+ORDER BY HIRE_DATE DESC;
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
